@@ -1,0 +1,18 @@
+.item-produto__root {
+  background-color: #fff;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-produto__cores {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.item-produto__cor {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
