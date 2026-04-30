@@ -25,10 +25,6 @@ function ItemProduto({ produto }) {
             />
           ))}
         </div>
-
-        <button className="btn-detalhes">
-          Ver detalhes
-        </button>
       </div>
     </div>
   );

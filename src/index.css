@@ -19,15 +19,15 @@ body {
 }
 
 :root {
- --cor-primaria-clara: #7986cb;
- --cor-primaria: #3f50b5;
+ --cor-primaria-clara: #001477;
+ --cor-primaria: #001cb9;
  --cor-primaria-escura: #303f9f;
 
  --cor-secundaria-clara: #ffab40;
- --cor-secundaria: #ff9100;
+ --cor-secundaria: #001cb9;
  --cor-secundaria-escura: #ff6d00;
 
- --cor-fundo-padrao: #f7f7f7;
+ --cor-fundo-padrao: #888888;
 
  --cor-texto-padrao: #1c2025;
  --cor-texto-claro: #fff;

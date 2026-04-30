@@ -10,19 +10,15 @@ function PaginaInicial() {
   return (
     <Principal>
       <BotaoCustomizado tipo="primario" aoClicar={() => navigate("/lista-produtos")}>
-        Lista de Produtos
+        Lista de Motos
       </BotaoCustomizado>
 
       <BotaoCustomizado tipo="secundario" aoClicar={() => navigate("/lista-tarefas")}>
-        Lista de Tarefas
+        Estoque de Motos
       </BotaoCustomizado>
 
-      <BotaoCustomizado tipo="primario" aoClicar={() => navigate("/lista-clientes")}>
-        Lista de Clientes
-      </BotaoCustomizado>
-
-      <BotaoCustomizado tipo="secundario" aoClicar={() => navigate("/cadastro-cliente")}>
-        Cadastro de Clientes
+      <BotaoCustomizado tipo="secundario" aoClicar={() => navigate("/cadastro-moto")}>
+        Cadastro de Motos
       </BotaoCustomizado>
 
       <BotaoCustomizado aoClicar={() => navigate("/blablabla")}>Rota Inválida</BotaoCustomizado>
