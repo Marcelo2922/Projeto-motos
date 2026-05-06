@@ -24,6 +24,27 @@ function CadastroMoto() {
   const [cor, setCor] = useState(motoEditando?.cor || "");
   const [km, setKm] = useState(motoEditando?.km || "");
 
+  const [status, setStatus] = useState(
+    motoEditando?.status || {
+      tipo: "",
+      situacao: "estoque",
+    }
+  );
+
+  function handleTipo(e) {
+    setStatus((prev) => ({
+      ...prev,
+      tipo: e.target.name,
+    }));
+  }
+
+  function handleSituacao(e) {
+    setStatus((prev) => ({
+      ...prev,
+      situacao: e.target.value,
+    }));
+  }
+
   function handleImagem(e) {
     const file = e.target.files[0];
     if (file) {
@@ -40,7 +61,6 @@ function CadastroMoto() {
       style: "currency",
       currency: "BRL",
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
     }).format(Number(valor));
   }
 
@@ -98,6 +118,7 @@ function CadastroMoto() {
               placa,
               cor,
               km,
+              status,
             }
           : m
       );
@@ -114,6 +135,7 @@ function CadastroMoto() {
         cor,
         km,
         cores: ["#000000"],
+        status,
       };
 
       novaLista = [...lista, novaMoto];
@@ -132,15 +154,6 @@ function CadastroMoto() {
       <div className="form-container">
 
         <div className="campo">
-          <label>Modelo</label>
-          <input
-            className="input"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
-
-        <div className="campo">
           <label>Marca</label>
           <select
             className="input"
@@ -157,6 +170,15 @@ function CadastroMoto() {
         </div>
 
         <div className="campo">
+          <label>Modelo</label>
+          <input
+            className="input"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+        </div>
+
+        <div className="campo">
           <label>Ano</label>
           <input
             className="input"
@@ -164,10 +186,6 @@ function CadastroMoto() {
             value={ano}
             onChange={(e) =>
               setAno(e.target.value.replace(/\D/g, "").slice(0, 4))
-            }
-            onKeyDown={(e) =>
-              ["e", "E", "+", "-", "."].includes(e.key) &&
-              e.preventDefault()
             }
           />
         </div>
@@ -189,10 +207,6 @@ function CadastroMoto() {
             value={km}
             onChange={(e) =>
               setKm(e.target.value.replace(/\D/g, "").slice(0, 6))
-            }
-            onKeyDown={(e) =>
-              ["e", "E", "+", "-", "."].includes(e.key) &&
-              e.preventDefault()
             }
           />
         </div>
@@ -221,6 +235,67 @@ function CadastroMoto() {
             onChange={handlePlaca}
             placeholder="ABC1D23"
           />
+        </div>
+
+        <div className="campo">
+          <label>Tipo</label>
+
+          <label>
+            <input
+              type="checkbox"
+              name="zeroKm"
+              checked={status.tipo === "zeroKm"}
+              onChange={handleTipo}
+            />
+            Zero KM
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              name="semiNova"
+              checked={status.tipo === "semiNova"}
+              onChange={handleTipo}
+            />
+            Semi-nova
+          </label>
+        </div>
+
+        <div className="campo">
+          <label>Situação</label>
+
+          <label>
+            <input
+              type="radio"
+              name="situacao"
+              value="estoque"
+              checked={status.situacao === "estoque"}
+              onChange={handleSituacao}
+            />
+            Em estoque
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="situacao"
+              value="reservada"
+              checked={status.situacao === "reservada"}
+              onChange={handleSituacao}
+            />
+            Reservada
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="situacao"
+              value="vendida"
+              checked={status.situacao === "vendida"}
+              onChange={handleSituacao}
+            />
+            Vendida
+          </label>
         </div>
 
         <div className="campo">
