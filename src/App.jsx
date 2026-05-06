@@ -7,32 +7,21 @@ import "./App.css";
 import Cabecalho from "./componentes/Cabecalho/Cabecalho";
 import Rodape from "./componentes/Rodape/Rodape";
 
-import ListaClientes from "./paginas/ListaClientes/ListaClientes";
 import ListaProdutos from "./paginas/ListaProdutos/ListaProdutos";
-import ListaTarefas from "./paginas/ListaTarefas/ListaTarefas";
 import PaginaInicial from "./paginas/PaginaInicial/PaginaInicial";
 import CadastroMoto from "./paginas/CadastroMoto/CadastroMoto";
 
 const roteador = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <PaginaInicial />,
   },
   {
-    path: "lista-produtos",
+    path: "/lista-produtos",
     element: <ListaProdutos />,
   },
   {
-    path: "lista-tarefas",
-    element: <ListaTarefas />,
-  },
-  {
-    path: "lista-clientes",
-    element: <ListaClientes />,
-  },
-
-  {
-    path: "cadastro-moto/:motoId?", 
+    path: "/cadastro-moto/:motoId?",
     element: <CadastroMoto />,
   },
   {

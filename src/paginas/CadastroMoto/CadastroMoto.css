@@ -1,0 +1,54 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-height: 80px;
+}
+
+.input-file {
+  font-size: 14px;
+}
+
+.preview {
+  width: 200px;
+  border-radius: 8px;
+}
+
+.btn-salvar {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-salvar:hover {
+  background-color: #1e7e34;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.campo label {
+  font-size: 14px;
+  font-weight: 500;
+}

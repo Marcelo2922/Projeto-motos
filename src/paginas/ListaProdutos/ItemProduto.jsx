@@ -1,31 +1,54 @@
-import "./ItemProduto.css";
+function ItemProduto({ produto, onEditar, onExcluir }) {
 
-function ItemProduto({ produto }) {
+  function formatarPreco(valor) {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(valor);
+  }
+
   return (
-    <div className="card-moto">
-      <img
-        src={produto.imagem}
-        alt={produto.nome}
-        className="card-moto-img"
-      />
+    <div className="item-produto__root">
 
-      <div className="card-moto-info">
-        <h2>{produto.nome}</h2>
-
-        <p className="preco">
-          R$ {produto.preco.toLocaleString("pt-BR")}
-        </p>
-
-        <div className="cores">
-          {produto.cores.map((cor, i) => (
-            <span
-              key={i}
-              className="cor"
-              style={{ backgroundColor: cor }}
-            />
-          ))}
+      {produto.imagem && (
+        <div className="item-produto__img-container">
+          <img
+            src={produto.imagem}
+            alt={produto.nome}
+            className="item-produto__img"
+          />
         </div>
-      </div>
+      )}
+
+      <h3>{produto.nome}</h3>
+
+      <p>
+        <strong>Marca:</strong>{" "}
+        {produto.marca || "Não informado"}
+      </p>
+
+      <p>
+        <strong>Ano:</strong> {produto.ano}
+      </p>
+
+      <p className="item-produto__preco">
+        {formatarPreco(produto.preco)}
+      </p>
+
+      <button
+        className="item-produto__editar"
+        onClick={onEditar}
+      >
+        Editar
+      </button>
+
+      <button
+        className="item-produto__excluir"
+        onClick={onExcluir}
+      >
+        Excluir
+      </button>
+
     </div>
   );
 }

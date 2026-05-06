@@ -13,15 +13,9 @@ function PaginaInicial() {
         Lista de Motos
       </BotaoCustomizado>
 
-      <BotaoCustomizado tipo="secundario" aoClicar={() => navigate("/lista-tarefas")}>
-        Estoque de Motos
-      </BotaoCustomizado>
-
       <BotaoCustomizado tipo="secundario" aoClicar={() => navigate("/cadastro-moto")}>
         Cadastro de Motos
       </BotaoCustomizado>
-
-      <BotaoCustomizado aoClicar={() => navigate("/blablabla")}>Rota Inválida</BotaoCustomizado>
     </Principal>
   );
 }
