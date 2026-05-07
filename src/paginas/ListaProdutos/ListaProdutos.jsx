@@ -72,7 +72,6 @@ function ListaProdutos() {
 
       <div className="filtro" style={{ display: "flex", gap: "10px" }}>
         
-        {/* Marca */}
         <select
           className="input"
           value={filtroMarca}
