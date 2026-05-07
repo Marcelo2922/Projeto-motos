@@ -132,15 +132,6 @@ function CadastroMoto() {
       <div className="form-container">
 
         <div className="campo">
-          <label>Modelo</label>
-          <input
-            className="input"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
-
-        <div className="campo">
           <label>Marca</label>
           <select
             className="input"
@@ -154,6 +145,15 @@ function CadastroMoto() {
             <option>Kawasaki</option>
             <option>Suzuki</option>
           </select>
+        </div>
+
+        <div className="campo">
+          <label>Modelo</label>
+          <input
+            className="input"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
         </div>
 
         <div className="campo">

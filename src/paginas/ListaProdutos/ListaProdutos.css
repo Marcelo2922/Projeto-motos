@@ -191,3 +191,7 @@
     transform: scale(1);
   }
 }
+
+.lista-produtos {
+  padding-bottom: 100px;
+}
