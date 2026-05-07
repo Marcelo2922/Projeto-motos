@@ -4,7 +4,6 @@
   gap: 20px;
   justify-content: center;
   padding: 20px;
-
   padding-bottom: 100px;
 }
 
@@ -194,5 +193,66 @@
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 768px) {
+
+  .lista-produtos {
+    gap: 15px;
+    padding: 15px;
+    padding-bottom: 120px;
+  }
+
+  .item-produto__root {
+    max-width: 100%;
+  }
+
+  .item-produto__img-container {
+    height: 180px;
+  }
+
+  .botao-add {
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
+
+    right: 15px;
+    bottom: 80px;
+  }
+
+  .modal {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .lista-produtos {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .item-produto__root {
+    padding: 12px;
+  }
+
+  .item-produto__img-container {
+    height: 160px;
+  }
+
+  .item-produto__preco {
+    font-size: 16px;
+  }
+
+  .botao-add {
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+
+    bottom: 75px;
+    right: 10px;
   }
 }
