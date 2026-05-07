@@ -4,6 +4,8 @@
   gap: 20px;
   justify-content: center;
   padding: 20px;
+
+  padding-bottom: 100px;
 }
 
 .item-produto__root {
@@ -32,7 +34,7 @@
   height: 140px;
   overflow: hidden;
   border-radius: 8px;
-  background: #f0f0f0; 
+  background: #f0f0f0;
 }
 
 .item-produto__img {
@@ -85,7 +87,7 @@
 
 .botao-add {
   position: fixed;
-  bottom: 20px;
+  bottom: 90px;
   right: 20px;
 
   width: 60px;
@@ -107,6 +109,8 @@
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: 0.3s;
+
+  z-index: 1000;
 }
 
 .botao-add:hover {
@@ -186,12 +190,9 @@
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
-}
-
-.lista-produtos {
-  padding-bottom: 100px;
 }
