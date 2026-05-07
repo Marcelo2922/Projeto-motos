@@ -3,14 +3,18 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  padding: 20px;
 
+  padding: 20px;
   padding-bottom: 100px;
+
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .item-produto__root {
   background-color: #fff;
   padding: 16px;
+
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -19,6 +23,7 @@
   max-width: 220px;
 
   border-radius: 12px;
+
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
   transition: 0.3s;
@@ -26,20 +31,25 @@
 
 .item-produto__root:hover {
   transform: translateY(-5px);
+
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .item-produto__img-container {
   width: 100%;
   height: 140px;
+
   overflow: hidden;
+
   border-radius: 8px;
+
   background: #f0f0f0;
 }
 
 .item-produto__img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
 }
 
@@ -57,27 +67,39 @@
 .item-produto__cor {
   width: 20px;
   height: 20px;
+
   border-radius: 50%;
+
   border: 1px solid #ccc;
 }
 
 .item-produto__excluir {
   background: #ca0000;
   color: #fff;
+
   border: none;
+
   padding: 8px;
+
   border-radius: 8px;
+
   cursor: pointer;
+
   transition: 0.3s;
 }
 
 .item-produto__editar {
   background: #007506;
   color: #fff;
+
   border: none;
+
   padding: 8px;
+
   border-radius: 8px;
+
   cursor: pointer;
+
   transition: 0.3s;
 }
 
@@ -87,15 +109,18 @@
 
 .botao-add {
   position: fixed;
+
   bottom: 90px;
   right: 20px;
 
   width: 60px;
   height: 60px;
+
   border-radius: 50%;
 
   background: #ff4c60;
   color: #fff;
+
   border: none;
 
   font-size: 28px;
@@ -108,6 +133,7 @@
   cursor: pointer;
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
   transition: 0.3s;
 
   z-index: 1000;
@@ -115,15 +141,19 @@
 
 .botao-add:hover {
   transform: scale(1.1);
+
   background: #e63e52;
 }
 
 .modal-overlay {
   position: fixed;
+
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   background: rgba(0, 0, 0, 0.6);
 
   display: flex;
@@ -135,9 +165,13 @@
 
 .modal {
   background: #fff;
+
   padding: 20px;
+
   border-radius: 12px;
+
   width: 300px;
+
   text-align: center;
 
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -155,16 +189,22 @@
 
 .modal-botoes {
   display: flex;
+
   gap: 10px;
+
   justify-content: center;
 }
 
 .btn-cancelar {
   background: #aaa;
   color: #fff;
+
   border: none;
+
   padding: 8px;
+
   border-radius: 8px;
+
   cursor: pointer;
 }
 
@@ -175,9 +215,13 @@
 .btn-excluir {
   background: #ff4c60;
   color: #fff;
+
   border: none;
+
   padding: 8px;
+
   border-radius: 8px;
+
   cursor: pointer;
 }
 
@@ -188,11 +232,13 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
+
     transform: scale(0.9);
   }
 
   to {
     opacity: 1;
+
     transform: scale(1);
   }
 }
