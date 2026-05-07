@@ -15,12 +15,12 @@ function PaginaInicial() {
 
     const qtdEstoque = lista.filter(
       (m) =>
-        m.status?.situacao === "estoque" ||
-        m.status?.situacao === "reservada"
+        m.situacao === "estoque" ||
+        m.situacao === "reservada"
     ).length;
 
     const totalVendas = lista
-      .filter((m) => m.status?.situacao === "vendida")
+      .filter((m) => m.situacao === "vendida")
       .reduce((acc, moto) => acc + (moto.preco || 0), 0);
 
     setEstoque(qtdEstoque);
@@ -39,7 +39,10 @@ function PaginaInicial() {
     <Principal>
       <div className="cards-container">
 
-        <div className="card-home card-nao-clicavel">
+        <div
+          className="card-home"
+          onClick={() => navigate("/lista-produtos?filtro=estoque")}
+        >
           <div className="icone">📦</div>
           <h2>Estoque</h2>
           <p>{estoque} motos disponíveis</p>

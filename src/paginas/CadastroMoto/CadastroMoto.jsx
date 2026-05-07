@@ -24,8 +24,29 @@ function CadastroMoto() {
   const [cor, setCor] = useState(motoEditando?.cor || "");
   const [km, setKm] = useState(motoEditando?.km || "");
 
+  const [situacao, setSituacao] = useState(
+    motoEditando?.situacao || "estoque"
+  );
+
+  const [tipo, setTipo] = useState(motoEditando?.tipo || "");
+
+  function handleSituacao(e) {
+    setSituacao(e.target.value);
+  }
+
+  function handleTipo(e) {
+    const value = e.target.name;
+
+    if (tipo === value) {
+      setTipo(""); 
+    } else {
+      setTipo(value);
+    }
+  }
+
   function handleImagem(e) {
     const file = e.target.files[0];
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => setImagem(reader.result);
@@ -98,6 +119,8 @@ function CadastroMoto() {
               placa,
               cor,
               km,
+              situacao,
+              tipo,
             }
           : m
       );
@@ -113,6 +136,8 @@ function CadastroMoto() {
         placa,
         cor,
         km,
+        situacao,
+        tipo,
         cores: ["#000000"],
       };
 
@@ -120,7 +145,9 @@ function CadastroMoto() {
     }
 
     localStorage.setItem("motos", JSON.stringify(novaLista));
+
     toast.success(motoId ? "Moto atualizada!" : "Moto cadastrada!");
+
     navigate("/lista-produtos");
   }
 
@@ -175,10 +202,12 @@ function CadastroMoto() {
         <div className="campo">
           <label>Preço</label>
           <input
-            className="input"
-            value={formatarPreco(preco)}
-            onChange={handlePreco}
-          />
+  className="input"
+  value={formatarPreco(preco)}
+  onChange={handlePreco}
+  inputMode="numeric"
+  pattern="[0-9]*"
+/>
         </div>
 
         <div className="campo">
@@ -221,6 +250,43 @@ function CadastroMoto() {
             onChange={handlePlaca}
             placeholder="ABC1D23"
           />
+        </div>
+
+        <div className="campo">
+          <label>Situação</label>
+          <select
+            className="input"
+            value={situacao}
+            onChange={handleSituacao}
+          >
+            <option value="estoque">Em estoque</option>
+            <option value="reservada">Reservada</option>
+            <option value="vendida">Vendida</option>
+          </select>
+        </div>
+
+        <div className="campo">
+          <label>Tipo</label>
+
+          <label>
+            <input
+              type="checkbox"
+              name="zeroKm"
+              checked={tipo === "zeroKm"}
+              onChange={handleTipo}
+            />
+            Zero KM
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              name="semiNova"
+              checked={tipo === "semiNova"}
+              onChange={handleTipo}
+            />
+            Semi-nova
+          </label>
         </div>
 
         <div className="campo">

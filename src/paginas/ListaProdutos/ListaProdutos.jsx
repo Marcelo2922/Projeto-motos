@@ -2,11 +2,18 @@ import { useState, useEffect } from "react";
 import "./ListaProdutos.css";
 import Principal from "../../componentes/Principal/Principal";
 import ItemProduto from "./ItemProduto";
-import { useNavigate, useLocation } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
 
 function ListaProdutos() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [searchParams] = useSearchParams();
+  const filtroUrl = searchParams.get("filtro");
 
   const [produtos, setProdutos] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -17,18 +24,32 @@ function ListaProdutos() {
   const [filtroSituacao, setFiltroSituacao] = useState("");
 
   useEffect(() => {
-    const lista = JSON.parse(localStorage.getItem("motos")) || [];
+    const lista = JSON.parse(
+      localStorage.getItem("motos") || "[]"
+    );
 
     const listaCorrigida = lista.map((m) => ({
       ...m,
       status: m.status || {
-        tipo: "",
-        situacao: "estoque",
+        tipo: m.tipo || "",
+        situacao: m.situacao || "estoque",
       },
     }));
 
     setProdutos(listaCorrigida);
   }, [location]);
+
+  useEffect(() => {
+
+    if (filtroUrl === "estoque") {
+      setFiltroSituacao("estoque-reservada");
+    } else if (location.state?.situacao) {
+      setFiltroSituacao(location.state.situacao);
+    } else {
+      setFiltroSituacao("");
+    }
+
+  }, [location, filtroUrl]);
 
   function confirmarExclusao(produto) {
     setProdutoSelecionado(produto);
@@ -45,39 +66,71 @@ function ListaProdutos() {
       (m) => m.id !== produtoSelecionado.id
     );
 
-    localStorage.setItem("motos", JSON.stringify(novaLista));
+    localStorage.setItem(
+      "motos",
+      JSON.stringify(novaLista)
+    );
+
     setProdutos(novaLista);
 
     cancelar();
   }
 
-  const marcas = [...new Set(produtos.map((p) => p.marca).filter(Boolean))];
+  const marcas = [
+    ...new Set(
+      produtos.map((p) => p.marca).filter(Boolean)
+    ),
+  ];
 
   const produtosFiltrados = produtos.filter((p) => {
-    const matchMarca = filtroMarca ? p.marca === filtroMarca : true;
+
+    const matchMarca = filtroMarca
+      ? p.marca === filtroMarca
+      : true;
 
     const matchTipo = filtroTipo
       ? p.status?.tipo === filtroTipo
       : true;
 
-    const matchSituacao = filtroSituacao
-      ? p.status?.situacao === filtroSituacao
-      : true;
+    const matchSituacao =
+      filtroSituacao === "estoque-reservada"
+        ? p.status?.situacao === "estoque" ||
+          p.status?.situacao === "reservada"
+        : filtroSituacao
+        ? p.status?.situacao === filtroSituacao
+        : true;
 
-    return matchMarca && matchTipo && matchSituacao;
+    return (
+      matchMarca &&
+      matchTipo &&
+      matchSituacao
+    );
   });
 
   return (
-    <Principal voltarPara="/" titulo="Lista de Motos">
+    <Principal
+      voltarPara="/"
+      titulo="Lista de Motos"
+    >
+      <div
+        className="filtro"
+        style={{
+          display: "flex",
+          gap: "10px",
+          marginBottom: "20px",
+        }}
+      >
 
-      <div className="filtro" style={{ display: "flex", gap: "10px" }}>
-        
         <select
           className="input"
           value={filtroMarca}
-          onChange={(e) => setFiltroMarca(e.target.value)}
+          onChange={(e) =>
+            setFiltroMarca(e.target.value)
+          }
         >
-          <option value="">Todas as marcas</option>
+          <option value="">
+            Todas as marcas
+          </option>
 
           {marcas.map((marca, index) => (
             <option key={index} value={marca}>
@@ -89,27 +142,50 @@ function ListaProdutos() {
         <select
           className="input"
           value={filtroTipo}
-          onChange={(e) => setFiltroTipo(e.target.value)}
+          onChange={(e) =>
+            setFiltroTipo(e.target.value)
+          }
         >
-          <option value="">Todos os tipos</option>
-          <option value="zeroKm">Zero KM</option>
-          <option value="semiNova">Semi-nova</option>
+          <option value="">
+            Todos os tipos
+          </option>
+
+          <option value="zeroKm">
+            Zero KM
+          </option>
+
+          <option value="semiNova">
+            Semi-nova
+          </option>
         </select>
 
         <select
           className="input"
           value={filtroSituacao}
-          onChange={(e) => setFiltroSituacao(e.target.value)}
+          onChange={(e) =>
+            setFiltroSituacao(e.target.value)
+          }
         >
-          <option value="">Todas</option>
-          <option value="estoque">Em estoque</option>
-          <option value="reservada">Reservada</option>
-          <option value="vendida">Vendida</option>
-        </select>
+          <option value="">
+            Todas
+          </option>
 
+          <option value="estoque">
+            Em estoque
+          </option>
+
+          <option value="reservada">
+            Reservada
+          </option>
+
+          <option value="vendida">
+            Vendida
+          </option>
+        </select>
       </div>
 
       <div className="lista-produtos">
+
         {produtosFiltrados.length === 0 && (
           <p>Nenhuma moto encontrada</p>
         )}
@@ -118,15 +194,23 @@ function ListaProdutos() {
           <ItemProduto
             key={produto.id}
             produto={produto}
-            onEditar={() => navigate(`/cadastro-moto/${produto.id}`)}
-            onExcluir={() => confirmarExclusao(produto)}
+            onEditar={() =>
+              navigate(
+                `/cadastro-moto/${produto.id}`
+              )
+            }
+            onExcluir={() =>
+              confirmarExclusao(produto)
+            }
           />
         ))}
       </div>
 
       <button
         className="botao-add"
-        onClick={() => navigate("/cadastro-moto")}
+        onClick={() =>
+          navigate("/cadastro-moto")
+        }
       >
         +
       </button>
@@ -134,24 +218,37 @@ function ListaProdutos() {
       {mostrarModal && (
         <div className="modal-overlay">
           <div className="modal">
+
             <h3>Confirmar exclusão</h3>
+
             <p>
               Deseja excluir{" "}
-              <strong>{produtoSelecionado?.nome}</strong>?
+              <strong>
+                {produtoSelecionado?.nome}
+              </strong>
+              ?
             </p>
 
             <div className="modal-botoes">
-              <button className="btn-cancelar" onClick={cancelar}>
+
+              <button
+                className="btn-cancelar"
+                onClick={cancelar}
+              >
                 Cancelar
               </button>
-              <button className="btn-excluir" onClick={excluir}>
+
+              <button
+                className="btn-excluir"
+                onClick={excluir}
+              >
                 Excluir
               </button>
+
             </div>
           </div>
         </div>
       )}
-
     </Principal>
   );
 }
