@@ -135,8 +135,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 
   transition: 0.3s;
-
-  z-index: 1000;
 }
 
 .botao-add:hover {
