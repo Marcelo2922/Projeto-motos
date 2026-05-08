@@ -108,10 +108,10 @@
 }
 
 .botao-add {
-  position: fixed;
+  position: absolute;
 
-  bottom: 90px;
   right: 20px;
+  bottom: 20px;
 
   width: 60px;
   height: 60px;
