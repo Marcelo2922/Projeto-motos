@@ -10,6 +10,8 @@ import Rodape from "./componentes/Rodape/Rodape";
 import ListaProdutos from "./paginas/ListaProdutos/ListaProdutos";
 import PaginaInicial from "./paginas/PaginaInicial/PaginaInicial";
 import CadastroMoto from "./paginas/CadastroMoto/CadastroMoto";
+import Estoque from "./paginas/Estoque/Estoque";
+
 
 const roteador = createBrowserRouter([
   {
@@ -17,8 +19,12 @@ const roteador = createBrowserRouter([
     element: <PaginaInicial />,
   },
   {
-    path: "/lista-produtos",
+    path: "/lista-de-motos",
     element: <ListaProdutos />,
+  },
+  {
+    path: "/Estoque",
+    element: <Estoque />,
   },
   {
     path: "/cadastro-moto/:motoId?",

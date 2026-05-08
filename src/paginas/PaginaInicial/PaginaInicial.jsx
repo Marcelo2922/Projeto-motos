@@ -41,7 +41,7 @@ function PaginaInicial() {
 
         <div
           className="card-home"
-          onClick={() => navigate("/lista-produtos?filtro=estoque")}
+          onClick={() => navigate("/estoque")}
         >
           <div className="icone">📦</div>
           <h2>Estoque</h2>
@@ -50,7 +50,7 @@ function PaginaInicial() {
 
         <div
           className="card-home"
-          onClick={() => navigate("/lista-produtos")}
+          onClick={() => navigate("/lista-de-motos")}
         >
           <div className="icone">📋</div>
           <h2>Lista de motos</h2>

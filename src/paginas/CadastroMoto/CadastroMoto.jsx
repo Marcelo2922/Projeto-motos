@@ -148,13 +148,13 @@ function CadastroMoto() {
 
     toast.success(motoId ? "Moto atualizada!" : "Moto cadastrada!");
 
-    navigate("/lista-produtos");
+    navigate("/lista-de-motos");
   }
 
   return (
     <Principal
       titulo={motoId ? "Editar Moto" : "Cadastrar Moto"}
-      voltarPara="/lista-produtos"
+      voltarPara="/lista-de-motos"
     >
       <div className="form-container">
 
