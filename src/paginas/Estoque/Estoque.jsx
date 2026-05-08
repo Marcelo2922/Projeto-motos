@@ -9,25 +9,35 @@ import {
 } from "react-router-dom";
 
 function ListaProdutos() {
+
+  // Navegação entre páginas
   const navigate = useNavigate();
+
+  // Pega informações da rota atual
   const location = useLocation();
 
+  // Pega parâmetros da URL
   const [searchParams] = useSearchParams();
   const filtroUrl = searchParams.get("filtro");
 
+  // Estados principais
   const [produtos, setProdutos] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
 
+  // Estados dos filtros
   const [filtroMarca, setFiltroMarca] = useState("");
   const [filtroTipo, setFiltroTipo] = useState("");
   const [filtroSituacao, setFiltroSituacao] = useState("");
 
+  // Carrega motos do localStorage
   useEffect(() => {
+
     const lista = JSON.parse(
       localStorage.getItem("motos") || "[]"
     );
 
+    // Corrige estrutura dos dados antigos
     const listaCorrigida = lista.map((m) => ({
       ...m,
       status: m.status || {
@@ -37,31 +47,39 @@ function ListaProdutos() {
     }));
 
     setProdutos(listaCorrigida);
+
   }, [location]);
 
+  // Define filtro automático pela URL
   useEffect(() => {
 
     if (filtroUrl === "estoque") {
       setFiltroSituacao("estoque-reservada");
+
     } else if (location.state?.situacao) {
       setFiltroSituacao(location.state.situacao);
+
     } else {
       setFiltroSituacao("");
     }
 
   }, [location, filtroUrl]);
 
+  // Abre modal de exclusão
   function confirmarExclusao(produto) {
     setProdutoSelecionado(produto);
     setMostrarModal(true);
   }
 
+  // Fecha modal
   function cancelar() {
     setMostrarModal(false);
     setProdutoSelecionado(null);
   }
 
+  // Remove produto
   function excluir() {
+
     const novaLista = produtos.filter(
       (m) => m.id !== produtoSelecionado.id
     );
@@ -76,12 +94,14 @@ function ListaProdutos() {
     cancelar();
   }
 
+  // Lista única de marcas
   const marcas = [
     ...new Set(
       produtos.map((p) => p.marca).filter(Boolean)
     ),
   ];
 
+  // Filtragem dos produtos
   const produtosFiltrados = produtos.filter((p) => {
 
     const matchMarca = filtroMarca
@@ -112,6 +132,8 @@ function ListaProdutos() {
       voltarPara="/"
       titulo="Estoque"
     >
+
+      {/* Filtros */}
       <div
         className="filtro"
         style={{
@@ -121,6 +143,7 @@ function ListaProdutos() {
         }}
       >
 
+        {/* Filtro de marca */}
         <select
           className="input"
           value={filtroMarca}
@@ -139,6 +162,7 @@ function ListaProdutos() {
           ))}
         </select>
 
+        {/* Filtro de tipo */}
         <select
           className="input"
           value={filtroTipo}
@@ -159,6 +183,7 @@ function ListaProdutos() {
           </option>
         </select>
 
+        {/* Filtro de situação */}
         <select
           className="input"
           value={filtroSituacao}
@@ -180,6 +205,7 @@ function ListaProdutos() {
         </select>
       </div>
 
+      {/* Lista de motos */}
       <div className="lista-produtos">
 
         {produtosFiltrados.length === 0 && (
@@ -190,11 +216,15 @@ function ListaProdutos() {
           <ItemProduto
             key={produto.id}
             produto={produto}
+
+            // Editar moto
             onEditar={() =>
               navigate(
                 `/cadastro-moto/${produto.id}`
               )
             }
+
+            // Excluir moto
             onExcluir={() =>
               confirmarExclusao(produto)
             }
@@ -202,6 +232,7 @@ function ListaProdutos() {
         ))}
       </div>
 
+      {/* Botão adicionar moto */}
       <button
         className="botao-add"
         onClick={() =>
@@ -211,8 +242,10 @@ function ListaProdutos() {
         +
       </button>
 
+      {/* Modal de confirmação */}
       {mostrarModal && (
         <div className="modal-overlay">
+
           <div className="modal">
 
             <h3>Confirmar exclusão</h3>
