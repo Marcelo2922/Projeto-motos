@@ -110,7 +110,7 @@ function ListaProdutos() {
   return (
     <Principal
       voltarPara="/"
-      titulo="Lista de Motos"
+      titulo="Estoque"
     >
       <div
         className="filtro"
