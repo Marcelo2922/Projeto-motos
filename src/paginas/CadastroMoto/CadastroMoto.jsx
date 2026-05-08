@@ -306,11 +306,7 @@ function CadastroMoto() {
             onChange={handleImagem}
           />
         </div>
-
-        {imagem && (
-          <img src={imagem} alt="preview" className="preview" />
-        )}
-
+        
         <button className="btn-salvar" onClick={salvar}>
           {motoId ? "Atualizar" : "Salvar"}
         </button>

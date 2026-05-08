@@ -4,7 +4,8 @@
   gap: 12px;
   width: 100%;
   max-width: 100%;
-  padding: 0 16px; 
+  padding: 0 16px 120px;
+  box-sizing: border-box;
 }
 
 .input {
@@ -27,7 +28,9 @@
 
 .preview {
   width: 200px;
+  max-width: 100%;
   border-radius: 8px;
+  object-fit: cover;
 }
 
 .btn-salvar {
