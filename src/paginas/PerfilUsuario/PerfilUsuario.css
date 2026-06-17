@@ -1,0 +1,16 @@
+.perfil-usuario__avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.perfil-usuario__avatar div {
+  width: 88px;
+  height: 88px;
+}
+
+.perfil-usuario__avatar-text {
+  margin-top: 8px;
+  font-size: 14px;
+}
