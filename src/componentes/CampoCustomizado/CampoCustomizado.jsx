@@ -1,10 +1,53 @@
 import "./CampoCustomizado.css";
 
-function CampoCustomizado({ label, ...props }) {
+function CampoCustomizado({
+  label,
+  obrigatorio,
+  opcoes,
+  ...props
+}) {
   return (
     <div className="campo-customizado__root">
-      <span>{label}</span>
-      <input className="campo-customizado__input" {...props} />
+
+      {/* Texto do campo */}
+      <span>
+        {label} {obrigatorio}
+      </span>
+
+      {/* Campo input padrão */}
+      {!opcoes && (
+        <input
+          className="campo-customizado__input"
+          {...props}
+        />
+      )}
+
+      {/* Campo select quando existir lista de opções */}
+      {opcoes && (
+        <select
+          className="campo-customizado__input"
+          {...props}
+        >
+          {/* Opção padrão */}
+          <option
+            key=""
+            value=""
+          >
+            Selecione...
+          </option>
+
+          {/* Lista de opções */}
+          {opcoes.map((opcao) => (
+            <option
+              key={opcao.valor}
+              value={opcao.valor}
+            >
+              {opcao.label}
+            </option>
+          ))}
+        </select>
+      )}
+
     </div>
   );
 }

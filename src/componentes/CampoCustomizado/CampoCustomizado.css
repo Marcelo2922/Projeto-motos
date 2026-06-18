@@ -8,3 +8,20 @@
   width: 100%;
   padding: 8px;
 }
+.campo-customizado__root {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.campo-customizado__input {
+  width: 100%;
+  padding: 8px;
+}
+
+.campo-customizado__obrigatorio {
+  color: var(--cor-erro);
+  font-weight: bold;
+}
+
+

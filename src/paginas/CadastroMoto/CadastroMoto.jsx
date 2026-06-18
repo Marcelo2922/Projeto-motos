@@ -2,20 +2,25 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Principal from "../../componentes/Principal/Principal";
 import { toast } from "react-toastify";
+import { useAppContext } from "../../contexto/AppContext";
 import "./CadastroMoto.css";
 
 function CadastroMoto() {
-
+  // Navegação, parâmetros da rota e contexto do usuário
   const navigate = useNavigate();
   const { motoId } = useParams();
+  const { usuarioLogado } = useAppContext();
 
+  // Lista de motos armazenadas no localStorage
   const lista =
     JSON.parse(localStorage.getItem("motos")) || [];
 
+  // Busca da moto que será editada
   const motoEditando = lista.find(
     (m) => m.id === Number(motoId)
   );
 
+  // Estados do formulário
   const [nome, setNome] = useState(motoEditando?.nome || "");
   const [preco, setPreco] = useState(
     motoEditando?.preco ? String(motoEditando.preco) : ""
@@ -27,18 +32,18 @@ function CadastroMoto() {
   const [placa, setPlaca] = useState(motoEditando?.placa || "");
   const [cor, setCor] = useState(motoEditando?.cor || "");
   const [km, setKm] = useState(motoEditando?.km || "");
-  const [situacao, setSituacao] = useState(motoEditando?.situacao || "estoque");
+  const [situacao, setSituacao] = useState(
+    motoEditando?.situacao || "estoque"
+  );
   const [tipo, setTipo] = useState(motoEditando?.tipo || "");
 
-  // =========================
-  // ENTER -> próxima linha/campo
-  // =========================
-
+  // Permite navegar pelos campos usando Enter
   function handleEnterNext(e) {
     if (e.key === "Enter") {
       e.preventDefault();
 
       const form = e.target.form;
+
       const elements = [...form.elements].filter(
         (el) =>
           el.tagName !== "BUTTON" &&
@@ -47,16 +52,19 @@ function CadastroMoto() {
       );
 
       const index = elements.indexOf(e.target);
+
       if (index > -1 && elements[index + 1]) {
         elements[index + 1].focus();
       }
     }
   }
 
+  // Atualiza a situação da moto
   function handleSituacao(e) {
     setSituacao(e.target.value);
   }
 
+  // Controla a seleção do tipo da moto
   function handleTipo(e) {
     const value = e.target.name;
 
@@ -67,19 +75,20 @@ function CadastroMoto() {
     }
   }
 
+  // Converte a imagem selecionada para Base64
   function handleImagem(e) {
     const file = e.target.files[0];
 
     if (file) {
       const reader = new FileReader();
 
-      reader.onloadend = () =>
-        setImagem(reader.result);
+      reader.onloadend = () => setImagem(reader.result);
 
       reader.readAsDataURL(file);
     }
   }
 
+  // Formata o preço para moeda brasileira
   function formatarPreco(valor) {
     if (!valor) return "";
 
@@ -91,6 +100,7 @@ function CadastroMoto() {
     }).format(Number(valor));
   }
 
+  // Formata a placa no padrão brasileiro
   function handlePlaca(e) {
     let valor = e.target.value.toUpperCase();
 
@@ -107,6 +117,7 @@ function CadastroMoto() {
     setPlaca(valor);
   }
 
+  // Validação e salvamento dos dados
   function salvar() {
     const regexPlaca = /^[A-Z]{3}-?[0-9][A-Z][0-9]{2}$/;
 
@@ -115,7 +126,9 @@ function CadastroMoto() {
       preco === "" ||
       ano.length !== 4
     ) {
-      toast.error("Preencha os campos obrigatórios corretamente!");
+      toast.error(
+        "Preencha os campos obrigatórios corretamente!"
+      );
       return;
     }
 
@@ -126,6 +139,7 @@ function CadastroMoto() {
 
     let novaLista;
 
+    // Atualização de uma moto existente
     if (motoId) {
       novaLista = lista.map((m) =>
         m.id === Number(motoId)
@@ -146,8 +160,10 @@ function CadastroMoto() {
           : m
       );
     } else {
+      // Cadastro de uma nova moto
       const novaMoto = {
         id: Date.now(),
+        idUsuario: usuarioLogado.id,
         nome,
         preco: Number(preco),
         descricao,
@@ -165,10 +181,16 @@ function CadastroMoto() {
       novaLista = [...lista, novaMoto];
     }
 
-    localStorage.setItem("motos", JSON.stringify(novaLista));
+    // Persistência dos dados
+    localStorage.setItem(
+      "motos",
+      JSON.stringify(novaLista)
+    );
 
     toast.success(
-      motoId ? "Moto atualizada!" : "Moto cadastrada!"
+      motoId
+        ? "Moto atualizada!"
+        : "Moto cadastrada!"
     );
 
     navigate("/lista-de-motos");
@@ -179,6 +201,7 @@ function CadastroMoto() {
       titulo={motoId ? "Editar Moto" : "Cadastrar Moto"}
       voltarPara="/lista-de-motos"
     >
+      {/* Formulário de cadastro/edição */}
       <form
         className="form-container"
         onSubmit={(e) => {
@@ -186,7 +209,7 @@ function CadastroMoto() {
           salvar();
         }}
       >
-
+        {/* Campo Marca */}
         <div className="campo">
           <label>Marca</label>
           <select
@@ -204,6 +227,7 @@ function CadastroMoto() {
           </select>
         </div>
 
+        {/* Campo Modelo */}
         <div className="campo">
           <label>Modelo</label>
           <input
@@ -214,6 +238,7 @@ function CadastroMoto() {
           />
         </div>
 
+        {/* Campo Ano */}
         <div className="campo">
           <label>Ano</label>
           <input
@@ -221,25 +246,33 @@ function CadastroMoto() {
             type="number"
             value={ano}
             onChange={(e) =>
-              setAno(e.target.value.replace(/\D/g, "").slice(0, 4))
+              setAno(
+                e.target.value
+                  .replace(/\D/g, "")
+                  .slice(0, 4)
+              )
             }
             onKeyDown={handleEnterNext}
           />
         </div>
 
+        {/* Campo Preço */}
         <div className="campo">
           <label>Preço</label>
           <input
             className="input"
             value={preco ? formatarPreco(preco) : ""}
             onChange={(e) =>
-              setPreco(e.target.value.replace(/\D/g, ""))
+              setPreco(
+                e.target.value.replace(/\D/g, "")
+              )
             }
             onKeyDown={handleEnterNext}
             inputMode="numeric"
           />
         </div>
 
+        {/* Campo Quilometragem */}
         <div className="campo">
           <label>KM</label>
           <input
@@ -247,12 +280,17 @@ function CadastroMoto() {
             type="number"
             value={km}
             onChange={(e) =>
-              setKm(e.target.value.replace(/\D/g, "").slice(0, 6))
+              setKm(
+                e.target.value
+                  .replace(/\D/g, "")
+                  .slice(0, 6)
+              )
             }
             onKeyDown={handleEnterNext}
           />
         </div>
 
+        {/* Campo Cor */}
         <div className="campo">
           <label>Cor</label>
           <select
@@ -270,6 +308,7 @@ function CadastroMoto() {
           </select>
         </div>
 
+        {/* Campo Placa */}
         <div className="campo">
           <label>Placa</label>
           <input
@@ -280,6 +319,7 @@ function CadastroMoto() {
           />
         </div>
 
+        {/* Campo Situação */}
         <div className="campo">
           <label>Situação</label>
           <select
@@ -294,6 +334,7 @@ function CadastroMoto() {
           </select>
         </div>
 
+        {/* Campo Tipo da Moto */}
         <div className="campo">
           <label>Tipo</label>
 
@@ -318,16 +359,19 @@ function CadastroMoto() {
           </label>
         </div>
 
+        {/* Campo Descrição */}
         <div className="campo">
           <label>Descrição</label>
           <textarea
             className="textarea"
             value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
-            // ENTER aqui continua criando linha normalmente
+            onChange={(e) =>
+              setDescricao(e.target.value)
+            }
           />
         </div>
 
+        {/* Campo Imagem */}
         <div className="campo">
           <label>Imagem</label>
           <input
@@ -338,10 +382,13 @@ function CadastroMoto() {
           />
         </div>
 
-        <button className="btn-salvar" type="submit">
+        {/* Botão de salvar */}
+        <button
+          className="btn-salvar"
+          type="submit"
+        >
           {motoId ? "Atualizar" : "Salvar"}
         </button>
-
       </form>
     </Principal>
   );

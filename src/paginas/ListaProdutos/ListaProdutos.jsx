@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./ListaProdutos.css";
 import Principal from "../../componentes/Principal/Principal";
 import ItemProduto from "./ItemProduto";
+import { useAppContext } from "../../contexto/AppContext";
 import {
   useNavigate,
   useLocation,
@@ -9,18 +10,16 @@ import {
 } from "react-router-dom";
 
 function ListaProdutos() {
-
-  // Navegação entre páginas
+  // Navegação, localização da rota e dados do usuário logado
   const navigate = useNavigate();
-
-  // Informações da rota atual
   const location = useLocation();
+  const { usuarioLogado } = useAppContext();
 
-  // Pega filtro da URL
+  // Parâmetros recebidos pela URL
   const [searchParams] = useSearchParams();
   const filtroUrl = searchParams.get("filtro");
 
-  // Estados principais
+  // Estados principais da tela
   const [produtos, setProdutos] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
@@ -30,15 +29,18 @@ function ListaProdutos() {
   const [filtroTipo, setFiltroTipo] = useState("");
   const [filtroSituacao, setFiltroSituacao] = useState("");
 
-  // Carrega motos do localStorage
+  // Carrega as motos do usuário e ajusta estrutura de status
   useEffect(() => {
+    const lista =
+      JSON.parse(localStorage.getItem("motos")) || [];
 
-    const lista = JSON.parse(
-      localStorage.getItem("motos") || "[]"
+    const listaDoUsuario = lista.filter(
+      (m) =>
+        String(m.idUsuario) ===
+        String(usuarioLogado?.id)
     );
 
-    // Corrige dados antigos
-    const listaCorrigida = lista.map((m) => ({
+    const listaCorrigida = listaDoUsuario.map((m) => ({
       ...m,
       status: m.status || {
         tipo: m.tipo || "",
@@ -47,66 +49,63 @@ function ListaProdutos() {
     }));
 
     setProdutos(listaCorrigida);
+  }, [location, usuarioLogado]);
 
-  }, [location]);
-
-  // Define filtro automático pela URL
+  // Aplica filtros recebidos pela URL ou navegação
   useEffect(() => {
-
     if (filtroUrl === "estoque") {
-
       setFiltroSituacao("estoque-reservada");
-
     } else if (location.state?.situacao) {
-
       setFiltroSituacao(location.state.situacao);
-
     } else {
-
       setFiltroSituacao("");
     }
-
   }, [location, filtroUrl]);
 
-  // Abre modal de exclusão
+  // Abre o modal de confirmação de exclusão
   function confirmarExclusao(produto) {
     setProdutoSelecionado(produto);
     setMostrarModal(true);
   }
 
-  // Fecha modal
+  // Fecha o modal e limpa a seleção
   function cancelar() {
     setMostrarModal(false);
     setProdutoSelecionado(null);
   }
 
-  // Exclui moto
+  // Exclui a moto selecionada
   function excluir() {
+    const todasAsMotos =
+      JSON.parse(localStorage.getItem("motos")) || [];
 
-    const novaLista = produtos.filter(
+    const novaListaCompleta = todasAsMotos.filter(
       (m) => m.id !== produtoSelecionado.id
     );
 
     localStorage.setItem(
       "motos",
-      JSON.stringify(novaLista)
+      JSON.stringify(novaListaCompleta)
     );
 
-    setProdutos(novaLista);
+    setProdutos(
+      produtos.filter(
+        (m) => m.id !== produtoSelecionado.id
+      )
+    );
 
     cancelar();
   }
 
-  // Lista única de marcas
+  // Lista única de marcas disponíveis
   const marcas = [
     ...new Set(
       produtos.map((p) => p.marca).filter(Boolean)
     ),
   ];
 
-  // Filtragem dos produtos
+  // Aplicação dos filtros na lista de produtos
   const produtosFiltrados = produtos.filter((p) => {
-
     const matchMarca = filtroMarca
       ? p.marca === filtroMarca
       : true;
@@ -135,7 +134,6 @@ function ListaProdutos() {
       voltarPara="/"
       titulo="Lista de Motos"
     >
-
       {/* Área de filtros */}
       <div
         className="filtro"
@@ -145,7 +143,6 @@ function ListaProdutos() {
           marginBottom: "20px",
         }}
       >
-
         {/* Filtro por marca */}
         <select
           className="input"
@@ -159,7 +156,10 @@ function ListaProdutos() {
           </option>
 
           {marcas.map((marca, index) => (
-            <option key={index} value={marca}>
+            <option
+              key={index}
+              value={marca}
+            >
               {marca}
             </option>
           ))}
@@ -212,27 +212,21 @@ function ListaProdutos() {
         </select>
       </div>
 
-      {/* Lista de produtos */}
+      {/* Listagem das motos */}
       <div className="lista-produtos">
-
         {produtosFiltrados.length === 0 && (
           <p>Nenhuma moto encontrada</p>
         )}
 
         {produtosFiltrados.map((produto) => (
-
           <ItemProduto
             key={produto.id}
             produto={produto}
-
-            // Editar moto
             onEditar={() =>
               navigate(
                 `/cadastro-moto/${produto.id}`
               )
             }
-
-            // Excluir moto
             onExcluir={() =>
               confirmarExclusao(produto)
             }
@@ -240,7 +234,7 @@ function ListaProdutos() {
         ))}
       </div>
 
-      {/* Botão adicionar */}
+      {/* Botão para cadastrar nova moto */}
       <button
         className="botao-add"
         onClick={() =>
@@ -250,13 +244,10 @@ function ListaProdutos() {
         +
       </button>
 
-      {/* Modal de confirmação */}
+      {/* Modal de confirmação de exclusão */}
       {mostrarModal && (
-
         <div className="modal-overlay">
-
           <div className="modal">
-
             <h3>Confirmar exclusão</h3>
 
             <p>
@@ -268,7 +259,7 @@ function ListaProdutos() {
             </p>
 
             <div className="modal-botoes">
-
+              {/* Cancelar exclusão */}
               <button
                 className="btn-cancelar"
                 onClick={cancelar}
@@ -276,13 +267,13 @@ function ListaProdutos() {
                 Cancelar
               </button>
 
+              {/* Confirmar exclusão */}
               <button
                 className="btn-excluir"
                 onClick={excluir}
               >
                 Excluir
               </button>
-
             </div>
           </div>
         </div>
